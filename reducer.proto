@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package reducer;
+
+service Reducer {
+	rpc Reduce (ReduceRequest) returns (ReduceReply);
+}
+
+message ReduceRequest {
+	repeated string PartitionClusters = 1;
+	int64 CentroidCount = 2;
+}
+
+message ReduceReply {
+	repeated string centroids = 1;
+	bool Success = 2;
+}

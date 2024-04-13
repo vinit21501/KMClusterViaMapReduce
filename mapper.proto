@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package mapper;
+
+service Mapper {
+	rpc Map (MapRequest) returns (MapReply);
+}
+
+message MapRequest {
+    int64 ReducerCount = 1;
+	int64 CentroidCount = 2;
+}
+
+message MapReply {
+	bool Success = 1;
+}
