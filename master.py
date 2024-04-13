@@ -35,11 +35,11 @@ class MapperHandler:
         def parallelMapping(mapperId):
             while True:
                 rep = exceptionalGRPCcall(self.stubList[mapperId].Map, req, mapperId, 'Mapper')
-                if rep:
-                    return rep
-                elif rep == None:
+                if rep == None:
                     writeDump(f'Master: mapper {mapperId} failed to responed, respawning mapper')
                     self.spawnProcess(mapperId)
+                elif rep.Success:
+                    return rep
                 else:
                     writeDump(f'Master: mapper {mapperId} failed to complete, resending request to mapper')
         with futures.ThreadPoolExecutor(max_workers = 1) as executor:
@@ -82,11 +82,11 @@ class ReducerHandler:
             req.CentroidCount = self.centroidCount
             while True:
                 rep = exceptionalGRPCcall(self.stubList[reducerId].Reduce, req, reducerId, 'Reducer')
-                if rep:
-                    return rep
-                elif rep == None:
+                if rep == None:
                     writeDump(f'Master: reducer {reducerId} failed to responed, respawning reducer')
                     self.spawnProcess(reducerId)
+                elif rep.Success:
+                    return rep
                 else:
                     writeDump(f'Master: reducer {reducerId} failed to complete, resending request to reducer')
         with futures.ThreadPoolExecutor(max_workers = 1) as executor:
@@ -180,14 +180,14 @@ def createShards(points, mapperCount):
                 file.write(f'{",".join(map(str, point))}\n')
 
 def serve():
-    # mapperCount = input('number of mappers (M)')
-    # reducerCount = input('number of reducers (R)')
-    # centroidCount = input('number of centroids (K)')
-    # iterationCount = input('number of iterations for K-Means')
-    mapperCount = 1
-    reducerCount = 1
-    centroidCount = 2
-    iterationCount = 20
+    mapperCount = input('number of mappers (M)')
+    reducerCount = input('number of reducers (R)')
+    centroidCount = input('number of centroids (K)')
+    iterationCount = input('number of iterations for K-Means')
+    # mapperCount = 1
+    # reducerCount = 1
+    # centroidCount = 2
+    # iterationCount = 20
     points = readPoints('Input/points.txt')
     generateRandomCentroids(points, centroidCount)
     createShards(points, mapperCount)
