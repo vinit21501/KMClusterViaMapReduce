@@ -180,14 +180,18 @@ def createShards(points, mapperCount):
                 file.write(f'{",".join(map(str, point))}\n')
 
 def serve():
-    mapperCount = input('number of mappers (M)')
-    reducerCount = input('number of reducers (R)')
-    centroidCount = input('number of centroids (K)')
-    iterationCount = input('number of iterations for K-Means')
-    # mapperCount = 1
-    # reducerCount = 1
-    # centroidCount = 2
-    # iterationCount = 20
+    # mapperCount = input('number of mappers (M)')
+    # reducerCount = input('number of reducers (R)')
+    # centroidCount = input('number of centroids (K)')
+    # iterationCount = input('number of iterations for K-Means')
+    mapperCount = 1
+    reducerCount = 1
+    centroidCount = 2
+    iterationCount = 20
+    if not os.path.exists('Mappers'):
+        os.mkdir('Mappers/')
+    if not os.path.exists('Reducers'):
+        os.mkdir('Reducers/')
     points = readPoints('Input/points.txt')
     generateRandomCentroids(points, centroidCount)
     createShards(points, mapperCount)
