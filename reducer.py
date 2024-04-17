@@ -17,17 +17,20 @@ class KMClusteringReducer():
     def shuffleandsort(self):
         self.clusters = [[] for _ in range(self.centroidCount)]
         for point in self.partitionClusters:
-            point = tuple(map(float, point.strip().split(',')))
+            point = list(map(float, point.strip().split(',')))
             self.clusters[int(point[0])].append(point)
         return self.clusters
     def reduce(self):
         centroids = []
         for cluster in self.clusters:
             if cluster == []:
+                prevCentroids = centroids[-1].copy()
+                prevCentroids[0] = str(int(prevCentroids[0]) + 1)
+                centroids.append(prevCentroids)
                 continue
             centroid = list(np.mean(cluster, axis=0))
             centroid[0] = int(centroid[0])
-            centroid = tuple(map(str, centroid))
+            centroid = list(map(str, centroid))
             centroids.append(centroid)
         with open(f'Reducers/R{self.reducerId}.txt', 'w') as file:
             for centroid in centroids:
