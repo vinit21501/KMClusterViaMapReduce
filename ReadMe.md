@@ -71,7 +71,7 @@ Initialization:
     Creates a gRPC server to handle incoming requests from the master.
 
 Shuffling and Sorting:
-    Reads partitioned clusters data from the mapper processes.
+    Reads partitioned clusters data from the master processes.
     Sorts the data and organizes it into clusters based on centroid IDs.
 
 Reducing:
@@ -81,7 +81,7 @@ Reducing:
     Returns the updated centroids to the master.
 
 Communication:
-    Responds to the master with a success or failure message indicating the completion status of the reducing task.
+    Respond to the master with the list of centroids and a success or failure message indicating the completion status of the reducing task.
 
 --------------------------------------------------------------------------------------------------------------------------
 Fault Tolerance:
