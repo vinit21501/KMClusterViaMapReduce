@@ -34,12 +34,10 @@ class KMClusteringMapper():
         return self.clusters
     def partition(self):
         partitionfd = [open(f'Mappers/M{self.mapperId}/partition_{partitionId + 1}.txt', 'w') for partitionId in range(self.reducerCount)]
-        clusterlen = 0
         for clusterId, cluster in enumerate(self.clusters):
-            for pointId, point in enumerate(cluster):
-                partitionfd[(clusterlen + pointId) % self.reducerCount].write(f'{clusterId},{point}\n')
-            clusterlen += len(cluster)
-        map(lambda x: x.close(), partitionfd)
+            for point in cluster:
+                partitionfd[clusterId % self.reducerCount].write(f'{clusterId},{point}\n')
+        list(map(lambda x: x.close(), partitionfd))
 
 def readPoints(file):
     points = []
