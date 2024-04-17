@@ -17,6 +17,7 @@ mrTimeOut = 5
 mapperHandler = None
 reducerHandler = None
 precision = 5
+python = 'python'
 
 class MapperHandler:
     def __init__(self, mapperCount, reducerCount, centroidCount):
@@ -49,12 +50,12 @@ class MapperHandler:
         global startingPort
         for mapperId in range(self.mapperCount):
             startingPort += 1
-            self.processes[str(mapperId + 1)] = subprocess.Popen(['python3', 'mapper.py', str(mapperId + 1), str(startingPort)])
+            self.processes[str(mapperId + 1)] = subprocess.Popen([python, 'mapper.py', str(mapperId + 1), str(startingPort)])
             self.ports[str(mapperId + 1)] = startingPort
     def spawnProcess(self, mapperId):
         startingPort += 1
         self.processes[mapperId].terminate()
-        self.processes[mapperId] = subprocess.Popen(['python3', 'mapper.py', mapperId, str(startingPort)])
+        self.processes[mapperId] = subprocess.Popen([python, 'mapper.py', mapperId, str(startingPort)])
         self.ports[mapperId] = startingPort
         self.channelList[mapperId] = grpc.insecure_channel(f'localhost:{startingPort}', options=[('grpc.default_timeout_ms', 2000)])
         self.stubList[mapperId] = mapper_pb2_grpc.MapperStub(self.channelList[mapperId])
@@ -120,12 +121,12 @@ class ReducerHandler:
         global startingPort
         for ReducerId in range(self.reducerCount):
             startingPort += 1
-            self.processes[str(ReducerId + 1)] = subprocess.Popen(['python3', 'reducer.py', str(ReducerId + 1), str(startingPort)])
+            self.processes[str(ReducerId + 1)] = subprocess.Popen([python, 'reducer.py', str(ReducerId + 1), str(startingPort)])
             self.ports[str(ReducerId + 1)] = startingPort
     def spawnProcess(self, reducerId):
         startingPort += 1
         self.processes[reducerId].terminate()
-        self.processes[reducerId] = subprocess.Popen(['python3', 'reducer.py', reducerId, str(startingPort)])
+        self.processes[reducerId] = subprocess.Popen([python, 'reducer.py', reducerId, str(startingPort)])
         self.ports[reducerId] = startingPort
         self.channelList[reducerId] = grpc.insecure_channel(f'localhost:{startingPort}', options=[('grpc.default_timeout_ms', 2000)])
         self.stubList[reducerId] = reducer_pb2_grpc.ReducerStub(self.channelList[reducerId])
