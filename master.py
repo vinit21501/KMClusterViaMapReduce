@@ -5,7 +5,7 @@ import reducer_pb2
 import reducer_pb2_grpc
 import subprocess
 import time
-from random import uniform
+from random import sample
 from concurrent import futures
 import os
 import shutil
@@ -152,11 +152,12 @@ def readPoints(file):
     return points
 
 def generateRandomCentroids(points, centroidCount):
-    minVal, maxVal = float('inf'), float('-inf')
-    for point in points:
-        minVal = min(min(point[0], minVal), point[1])
-        maxVal = max(max(point[0], maxVal), point[1])
-    centroids = [(uniform(minVal, maxVal), uniform(minVal, maxVal)) for _ in range(centroidCount)]
+    # minVal, maxVal = float('inf'), float('-inf')
+    # for point in points:
+    #     minVal = min(min(point[0], minVal), point[1])
+    #     maxVal = max(max(point[0], maxVal), point[1])
+    # centroids = [(uniform(minVal, maxVal), uniform(minVal, maxVal)) for _ in range(centroidCount)]
+    centroids = sample(points, k=centroidCount)
     with open('centroids.txt', 'w') as file:
         for centroid in centroids:
             file.write(f'{",".join(map(str, centroid))}\n')
@@ -180,14 +181,14 @@ def createShards(points, mapperCount):
                 file.write(f'{",".join(map(str, point))}\n')
 
 def serve():
-    # mapperCount = input('number of mappers (M)')
-    # reducerCount = input('number of reducers (R)')
-    # centroidCount = input('number of centroids (K)')
-    # iterationCount = input('number of iterations for K-Means')
-    mapperCount = 1
-    reducerCount = 1
-    centroidCount = 2
-    iterationCount = 20
+    mapperCount = input('number of mappers (M)')
+    reducerCount = input('number of reducers (R)')
+    centroidCount = input('number of centroids (K)')
+    iterationCount = input('number of iterations for K-Means')
+    # mapperCount = 2
+    # reducerCount = 2
+    # centroidCount = 2
+    # iterationCount = 20
     if not os.path.exists('Mappers'):
         os.mkdir('Mappers/')
     if not os.path.exists('Reducers'):
