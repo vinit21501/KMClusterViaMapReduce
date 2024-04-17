@@ -22,11 +22,14 @@ class KMClusteringReducer():
         return self.clusters
     def reduce(self):
         centroids = []
+        id = -1
         for cluster in self.clusters:
+            id += 1
             if cluster == []:
-                prevCentroids = centroids[-1].copy()
-                prevCentroids[0] = str(int(prevCentroids[0]) + 1)
-                centroids.append(prevCentroids)
+                temp = []
+                list(map(temp.extend, self.clusters))
+                point = choice(temp)
+                centroids.append(list(map(str, (id, point[1], point[2]))))
                 continue
             centroid = list(np.mean(cluster, axis=0))
             centroid[0] = int(centroid[0])
