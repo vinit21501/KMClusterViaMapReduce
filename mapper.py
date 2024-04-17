@@ -38,6 +38,7 @@ class KMClusteringMapper():
             for point in cluster:
                 partitionfd[clusterId % self.reducerCount].write(f'{clusterId},{point}\n')
         list(map(lambda x: x.close(), partitionfd))
+        return [f'Mappers/M{self.mapperId}/partition_{partitionId + 1}.txt' for partitionId in range(self.reducerCount)]
 
 def readPoints(file):
     points = []
@@ -62,7 +63,7 @@ class MapperServicer(mapper_pb2_grpc.MapperServicer):
             writeDump(f'Mapper {mapperId}: mapping')
             kmeans.map()
             writeDump(f'Mapper {mapperId}: partitioning')
-            kmeans.partition()
+            rep.file.extend(kmeans.partition())
             print(f'Mapper {mapperId}: completed')
             # rep.Success = True
             if random() >= 0.5:
