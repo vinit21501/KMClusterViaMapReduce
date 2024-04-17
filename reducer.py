@@ -4,6 +4,7 @@ import reducer_pb2_grpc
 from concurrent import futures
 import numpy as np
 import sys
+from random import random
 
 reducerId = 1
 recieverPort = '50051'
@@ -22,6 +23,8 @@ class KMClusteringReducer():
     def reduce(self):
         centroids = []
         for cluster in self.clusters:
+            if cluster == []:
+                continue
             centroid = list(np.mean(cluster, axis=0))
             centroid[0] = int(centroid[0])
             centroid = tuple(map(str, centroid))
@@ -44,8 +47,13 @@ class ReducerServicer(reducer_pb2_grpc.ReducerServicer):
             writeDump(f'Reducer {reducerId}: shuffling and sorting')
             kmeans.shuffleandsort()
             writeDump(f'Reducer {reducerId}: reducing')
-            rep.centroids.extend(kmeans.reduce())
-            rep.Success = True
+            cen = kmeans.reduce()
+            rep.centroids.extend(cen)
+            # rep.Success = True
+            if random() >= 0.5:
+                rep.Success = True
+            else:
+                rep.Success = False
         except Exception as e:
             print(f'Reducer {reducerId}: failed, {e}')
             rep.Success = False
