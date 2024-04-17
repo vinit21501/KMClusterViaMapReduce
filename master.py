@@ -184,14 +184,14 @@ def createShards(points, mapperCount):
                 file.write(f'{",".join(map(str, point))}\n')
 
 def serve():
-    mapperCount = int(input('number of mappers (M): '))
-    reducerCount = int(input('number of reducers (R): '))
-    centroidCount = int(input('number of centroids (K): '))
-    iterationCount = int(input('number of iterations for K-Means: '))
-    # mapperCount = 2
-    # reducerCount = 2
-    # centroidCount = 3
-    # iterationCount = 20
+    # mapperCount = int(input('number of mappers (M): '))
+    # reducerCount = int(input('number of reducers (R): '))
+    # centroidCount = int(input('number of centroids (K): '))
+    # iterationCount = int(input('number of iterations for K-Means: '))
+    mapperCount = 5
+    reducerCount = 6
+    centroidCount = 3
+    iterationCount = 9
     if not os.path.exists('Mappers'):
         os.mkdir('Mappers/')
     if not os.path.exists('Reducers'):
