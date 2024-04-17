@@ -4,7 +4,7 @@ import reducer_pb2_grpc
 from concurrent import futures
 import numpy as np
 import sys
-from random import random
+from random import random, choice
 
 reducerId = 1
 recieverPort = '50051'
