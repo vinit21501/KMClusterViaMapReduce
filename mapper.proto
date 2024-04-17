@@ -7,7 +7,7 @@ service Mapper {
 }
 
 message MapRequest {
-    int64 ReducerCount = 1;
+	int64 ReducerCount = 1;
 	int64 CentroidCount = 2;
 }
 
