@@ -35,8 +35,8 @@ Iteration Execution:
     Iterates through the K-Means algorithm until convergence or a fixed number of iterations.
     Executes mapping and reducing tasks for each iteration.
     Monitors the convergence of centroids and terminates iterations accordingly.
-    Logging:
 
+Logging:
 Logs the execution progress and status updates into the {dumps.txt} file for debugging and monitoring purposes.
 
 -------------------------------------------------------------------------------------------------------------------------
