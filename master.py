@@ -93,10 +93,12 @@ class ReducerHandler:
             results = executor.map(parallelReducing, self.stubList.keys())
         for result in results:
             if result and result.Success:
+                # print(result.centroids)
                 for centroid in result.centroids:
                     centroid = list(map(float, centroid.strip().split(',')))
                     centroid[0] = int(centroid[0])
                     self.centroids[centroid[0]].append(centroid)
+        # print(self.centroids)
     def centroidCompilation(self):
         testCentroid1 = []
         with open('centroids.txt') as file:
@@ -187,7 +189,7 @@ def serve():
     iterationCount = input('number of iterations for K-Means')
     # mapperCount = 2
     # reducerCount = 2
-    # centroidCount = 2
+    # centroidCount = 3
     # iterationCount = 20
     if not os.path.exists('Mappers'):
         os.mkdir('Mappers/')
