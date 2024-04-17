@@ -13,4 +13,5 @@ message MapRequest {
 
 message MapReply {
 	bool Success = 1;
+	repeated string file = 2;
 }
