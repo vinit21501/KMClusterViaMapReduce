@@ -27,7 +27,7 @@ class KMClusteringMapper():
         self.mapperId = mapperId
         self.reducerCount = reducerCount
     def map(self):
-        self.clusters = tuple([] for _ in range(len(self.centroids)))
+        self.clusters = list([] for _ in range(len(self.centroids)))
         for point in self.points:
             centroidid = np.argmin(list(map(point.euclidean, self.centroids)))
             self.clusters[centroidid].append(point)
