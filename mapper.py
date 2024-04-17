@@ -3,9 +3,8 @@ import mapper_pb2
 import mapper_pb2_grpc
 from concurrent import futures
 import sys
-import time
 from math import sqrt
-from random import uniform
+from random import random
 import numpy as np
 
 mapperId = 1
@@ -67,7 +66,11 @@ class MapperServicer(mapper_pb2_grpc.MapperServicer):
             writeDump(f'Mapper {mapperId}: partitioning')
             kmeans.partition()
             print(f'Mapper {mapperId}: completed')
-            rep.Success = True
+            # rep.Success = True
+            if random() >= 0.5:
+                rep.Success = True
+            else:
+                rep.Success = False
         except Exception as e:
             print(f"Mapper {mapperId}: failed, {e}")
             rep.Success = False
